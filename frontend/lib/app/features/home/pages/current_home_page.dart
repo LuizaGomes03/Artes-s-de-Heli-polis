@@ -31,21 +31,90 @@ const _aboutImages = [
 ];
 
 const _products = [
-  {'name': 'Cesta Trançada Sol', 'artisan': 'Maria', 'price': 'R\$ 85', 'category': 'Casa', 'image': 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=900&auto=format&fit=crop'},
-  {'name': 'Colar Raízes', 'artisan': 'Joana', 'price': 'R\$ 120', 'category': 'Joias', 'image': 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?q=80&w=900&auto=format&fit=crop'},
-  {'name': 'Boneca Abayomi', 'artisan': 'Ana', 'price': 'R\$ 95', 'category': 'Brinquedos', 'image': 'https://images.unsplash.com/photo-1560932684-4d7e7a1f2f0f?q=80&w=900&auto=format&fit=crop'},
-  {'name': 'Bolsa Horizonte', 'artisan': 'Maria', 'price': 'R\$ 160', 'category': 'Acessórios', 'image': 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=900&auto=format&fit=crop'},
-  {'name': 'Brinco Semente', 'artisan': 'Lúcia', 'price': 'R\$ 70', 'category': 'Joias', 'image': 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=900&auto=format&fit=crop'},
-  {'name': 'Manta Memória', 'artisan': 'Rosa', 'price': 'R\$ 210', 'category': 'Vestuário', 'image': 'https://images.unsplash.com/photo-1604176354204-9268737828e4?q=80&w=900&auto=format&fit=crop'},
+  {
+    'name': 'Cesta Trançada Sol',
+    'artisan': 'Maria',
+    'price': 'R\$ 85',
+    'category': 'Casa',
+    'image':
+        'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=900&auto=format&fit=crop'
+  },
+  {
+    'name': 'Colar Raízes',
+    'artisan': 'Joana',
+    'price': 'R\$ 120',
+    'category': 'Joias',
+    'image':
+        'https://images.unsplash.com/photo-1611652022419-a9419f74343d?q=80&w=900&auto=format&fit=crop'
+  },
+  {
+    'name': 'Boneca Abayomi',
+    'artisan': 'Ana',
+    'price': 'R\$ 95',
+    'category': 'Brinquedos',
+    'image':
+        'https://images.unsplash.com/photo-1560932684-4d7e7a1f2f0f?q=80&w=900&auto=format&fit=crop'
+  },
+  {
+    'name': 'Bolsa Horizonte',
+    'artisan': 'Maria',
+    'price': 'R\$ 160',
+    'category': 'Acessórios',
+    'image':
+        'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=900&auto=format&fit=crop'
+  },
+  {
+    'name': 'Brinco Semente',
+    'artisan': 'Lúcia',
+    'price': 'R\$ 70',
+    'category': 'Joias',
+    'image':
+        'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=900&auto=format&fit=crop'
+  },
+  {
+    'name': 'Manta Memória',
+    'artisan': 'Rosa',
+    'price': 'R\$ 210',
+    'category': 'Vestuário',
+    'image':
+        'https://images.unsplash.com/photo-1604176354204-9268737828e4?q=80&w=900&auto=format&fit=crop'
+  },
 ];
 
 enum Lang { pt, en, es }
-enum Page { home, about, products, login, artisanSignup, accountSignup, buyer, cart, checkout, artisan, legal }
-enum ArtisanSection { overview, orders, messages, products, sales, export, help, settings }
+
+enum Page {
+  home,
+  about,
+  products,
+  login,
+  artisanSignup,
+  accountSignup,
+  buyer,
+  cart,
+  checkout,
+  artisan,
+  legal
+}
+
+enum ArtisanSection {
+  overview,
+  orders,
+  messages,
+  products,
+  sales,
+  export,
+  help,
+  settings
+}
+
 enum LegalDoc { terms, privacy, cookies, commerce, community }
 
-String tr(Lang l, String pt, String en, String es) =>
-    l == Lang.pt ? pt : l == Lang.en ? en : es;
+String tr(Lang l, String pt, String en, String es) => l == Lang.pt
+    ? pt
+    : l == Lang.en
+        ? en
+        : es;
 
 class CurrentHomePage extends StatefulWidget {
   const CurrentHomePage({super.key});
@@ -59,11 +128,12 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
   Page page = Page.home;
   final cartItems = <int>[];
   final favorites = <int>{};
+  final List<Map<String, String>> _customProducts = [];
   bool signedIn = false;
   String role = 'buyer';
 
   // Seção atual da área "Minha conta" do comprador.
-  String buyerSection = 'profile';
+  String buyerSection = 'overview';
 
   ArtisanSection artisanSection = ArtisanSection.overview;
   LegalDoc legalDoc = LegalDoc.terms;
@@ -240,26 +310,25 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
 
   void _openCart() => go(Page.cart);
 
- void _snack(String text) {
-  ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(
-      SnackBar(
-        content: Text(
-          text,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
+  void _snack(String text) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(
+            text,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          behavior: SnackBarBehavior.floating,
+          width: 360,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          duration: const Duration(seconds: 2),
         ),
-        behavior: SnackBarBehavior.floating,
-        width: 360,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-}
-  
+      );
+  }
 
   Future<void> _openChat() async {
     await showDialog<void>(
@@ -348,7 +417,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
               onPressed: _openChat,
               backgroundColor: _primary,
               foregroundColor: Colors.white,
-              tooltip: tr(lang, 'Abrir assistente', 'Open assistant', 'Abrir asistente'),
+              tooltip: tr(lang, 'Abrir assistente', 'Open assistant',
+                  'Abrir asistente'),
               child: const Icon(Icons.chat_bubble_outline),
             ),
     );
@@ -459,7 +529,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                       'We use cookies to improve your experience. For more information, see our Privacy Policy.',
                       'Usamos cookies para mejorar tu experiencia. Para más información, consulta nuestra Política de Privacidad.',
                     ),
-                    style: const TextStyle(color: _fg, fontSize: 13.5, height: 1.4),
+                    style: const TextStyle(
+                        color: _fg, fontSize: 13.5, height: 1.4),
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -471,20 +542,23 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                             go(Page.legal);
                           },
                           child: Text(
-                            tr(lang, 'Configurar cookies', 'Cookie settings', 'Configurar cookies'),
+                            tr(lang, 'Configurar cookies', 'Cookie settings',
+                                'Configurar cookies'),
                           ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () => setState(() => _cookiesAccepted = true),
+                          onPressed: () =>
+                              setState(() => _cookiesAccepted = true),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _fg,
                             foregroundColor: Colors.white,
                           ),
                           child: Text(
-                            tr(lang, 'Aceitar todos', 'Accept all', 'Aceptar todos'),
+                            tr(lang, 'Aceitar todos', 'Accept all',
+                                'Aceptar todos'),
                           ),
                         ),
                       ),
@@ -502,7 +576,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                         'We use cookies to improve your experience. For more information, see our Privacy Policy.',
                         'Usamos cookies para mejorar tu experiencia. Para más información, consulta nuestra Política de Privacidad.',
                       ),
-                      style: const TextStyle(color: _fg, fontSize: 14, height: 1.4),
+                      style: const TextStyle(
+                          color: _fg, fontSize: 14, height: 1.4),
                     ),
                   ),
                   const SizedBox(width: 18),
@@ -512,7 +587,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                       go(Page.legal);
                     },
                     child: Text(
-                      tr(lang, 'Configurar cookies', 'Cookie settings', 'Configurar cookies'),
+                      tr(lang, 'Configurar cookies', 'Cookie settings',
+                          'Configurar cookies'),
                       style: const TextStyle(fontWeight: FontWeight.w800),
                     ),
                   ),
@@ -522,10 +598,12 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _fg,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 13),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 22, vertical: 13),
                     ),
                     child: Text(
-                      tr(lang, 'Aceitar todos os cookies', 'Accept all cookies', 'Aceptar todas las cookies'),
+                      tr(lang, 'Aceitar todos os cookies', 'Accept all cookies',
+                          'Aceptar todas las cookies'),
                     ),
                   ),
                 ],
@@ -668,7 +746,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
       style: MenuStyle(
         backgroundColor: const WidgetStatePropertyAll(Color(0xFFF4F9F7)),
         elevation: const WidgetStatePropertyAll(8),
-        padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 8)),
+        padding:
+            const WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 8)),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
@@ -680,7 +759,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
         ),
         MenuItemButton(
           onPressed: () => go(Page.accountSignup),
-          child: Text(tr(lang, 'Criar conta', 'Create account', 'Crear cuenta')),
+          child:
+              Text(tr(lang, 'Criar conta', 'Create account', 'Crear cuenta')),
         ),
         const Divider(height: 12),
         Padding(
@@ -690,8 +770,10 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
               const Icon(Icons.storefront_outlined, size: 18, color: _primary),
               const SizedBox(width: 8),
               Text(
-                tr(lang, 'Mulheres artesãs', 'Women artisans', 'Mujeres artesanas'),
-                style: const TextStyle(color: _primary, fontWeight: FontWeight.w900),
+                tr(lang, 'Mulheres artesãs', 'Women artisans',
+                    'Mujeres artesanas'),
+                style: const TextStyle(
+                    color: _primary, fontWeight: FontWeight.w900),
               ),
             ],
           ),
@@ -712,7 +794,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
         ),
       ],
       builder: (context, controller, child) => IconButton(
-        onPressed: () => controller.isOpen ? controller.close() : controller.open(),
+        onPressed: () =>
+            controller.isOpen ? controller.close() : controller.open(),
         tooltip: tr(lang, 'Minha conta', 'My account', 'Mi cuenta'),
         icon: const Icon(Icons.person_outline),
       ),
@@ -1535,7 +1618,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                   final items = [
                     [
                       Icons.storefront_outlined,
-                      tr(lang, 'Vitrine digital', 'Digital showcase', 'Escaparate digital'),
+                      tr(lang, 'Vitrine digital', 'Digital showcase',
+                          'Escaparate digital'),
                       tr(
                         lang,
                         'Artesãs podem apresentar suas peças, técnicas, histórias e informações de compra.',
@@ -1545,7 +1629,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     ],
                     [
                       Icons.language_outlined,
-                      tr(lang, 'Alcance internacional', 'International reach', 'Alcance internacional'),
+                      tr(lang, 'Alcance internacional', 'International reach',
+                          'Alcance internacional'),
                       tr(
                         lang,
                         'Conteúdo em diferentes idiomas para aproximar o artesanato de compradores de outros lugares.',
@@ -1565,7 +1650,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     ],
                     [
                       Icons.accessibility_new_outlined,
-                      tr(lang, 'Acessibilidade', 'Accessibility', 'Accesibilidad'),
+                      tr(lang, 'Acessibilidade', 'Accessibility',
+                          'Accesibilidad'),
                       tr(
                         lang,
                         'Uma experiência simples, clara e pensada para diferentes públicos.',
@@ -1795,7 +1881,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _sectionTitle(
-                tr(lang, 'O que nos move', 'What drives us', 'Lo que nos mueve'),
+                tr(lang, 'O que nos move', 'What drives us',
+                    'Lo que nos mueve'),
                 tr(
                   lang,
                   'Três princípios no coração do projeto.',
@@ -2161,8 +2248,7 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: 3,
-                    gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: count,
                       crossAxisSpacing: 18,
                       mainAxisSpacing: 18,
@@ -2216,8 +2302,7 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                   top: 10,
                   right: 10,
                   child: CircleAvatar(
-                    backgroundColor:
-                        Colors.white.withValues(alpha: .92),
+                    backgroundColor: Colors.white.withValues(alpha: .92),
                     child: IconButton(
                       iconSize: 18,
                       onPressed: () {
@@ -2231,9 +2316,7 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                         favorites.contains(i)
                             ? Icons.favorite
                             : Icons.favorite_border,
-                        color: favorites.contains(i)
-                            ? _accent
-                            : _fg,
+                        color: favorites.contains(i) ? _accent : _fg,
                       ),
                     ),
                   ),
@@ -2302,9 +2385,11 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
   Widget _how() {
     final items = [
       tr(lang, 'Peças feitas à mão', 'Handmade pieces', 'Piezas hechas a mano'),
-      tr(lang, 'Histórias que conectam', 'Stories that connect', 'Historias que conectan'),
+      tr(lang, 'Histórias que conectam', 'Stories that connect',
+          'Historias que conectan'),
       tr(lang, 'Compra direta', 'Buy directly', 'Compra directa'),
-      tr(lang, 'Impacto na comunidade', 'Community impact', 'Impacto en la comunidad'),
+      tr(lang, 'Impacto na comunidade', 'Community impact',
+          'Impacto en la comunidad'),
     ];
 
     return Container(
@@ -2340,8 +2425,7 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: 4,
-                    gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: n,
                       crossAxisSpacing: 15,
                       mainAxisSpacing: 15,
@@ -2548,7 +2632,6 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                       ],
                     ),
                   ),
-
                   _footerCol(
                     tr(lang, 'Plataforma', 'Platform', 'Plataforma'),
                     [
@@ -2578,7 +2661,6 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                       ),
                     ],
                   ),
-
                   _footerCol(
                     tr(lang, 'Suporte', 'Support', 'Soporte'),
                     [
@@ -2608,7 +2690,6 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                       ),
                     ],
                   ),
-
                   _footerCol(
                     tr(lang, 'Comunidade', 'Community', 'Comunidad'),
                     [
@@ -2640,16 +2721,12 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 38),
-
               const Divider(
                 color: _border,
                 height: 1,
               ),
-
               const SizedBox(height: 24),
-
               Text(
                 tr(
                   lang,
@@ -2663,9 +2740,7 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                   fontSize: 12.5,
                 ),
               ),
-
               const SizedBox(height: 8),
-
               Text(
                 tr(
                   lang,
@@ -2736,7 +2811,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
               ),
               ChoiceChip(
                 selected: phone,
-                label: Text(tr(lang, '☎ Telefone / WhatsApp', '☎ Phone / WhatsApp', '☎ Teléfono / WhatsApp')),
+                label: Text(tr(lang, '☎ Telefone / WhatsApp',
+                    '☎ Phone / WhatsApp', '☎ Teléfono / WhatsApp')),
                 onSelected: (_) => setState(() => _newsletterMethod = 'phone'),
               ),
             ],
@@ -2778,12 +2854,18 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
 
   Widget _newsletterField(bool phone) {
     return TextField(
-      controller: phone ? _newsletterPhoneController : _newsletterEmailController,
+      controller:
+          phone ? _newsletterPhoneController : _newsletterEmailController,
       keyboardType: phone ? TextInputType.phone : TextInputType.emailAddress,
       decoration: InputDecoration(
         hintText: phone
-            ? tr(lang, 'Digite seu telefone ou WhatsApp', 'Enter your phone or WhatsApp', 'Ingresa tu teléfono o WhatsApp')
-            : tr(lang, 'Digite seu melhor e-mail', 'Enter your email', 'Ingresa tu correo electrónico'),
+            ? tr(
+                lang,
+                'Digite seu telefone ou WhatsApp',
+                'Enter your phone or WhatsApp',
+                'Ingresa tu teléfono o WhatsApp')
+            : tr(lang, 'Digite seu melhor e-mail', 'Enter your email',
+                'Ingresa tu correo electrónico'),
         prefixIcon: Icon(phone ? Icons.phone_outlined : Icons.email_outlined),
         filled: true,
         fillColor: Colors.white,
@@ -2933,19 +3015,21 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: cats.map(
-                  (c) => ChoiceChip(
-                    label: Text(c),
-                    selected: category == c,
-                    onSelected: (_) {
-                      setState(() => category = c);
-                    },
-                    selectedColor: _primary,
-                    labelStyle: TextStyle(
-                      color: category == c ? Colors.white : _fg,
-                    ),
-                  ),
-                ).toList(),
+                children: cats
+                    .map(
+                      (c) => ChoiceChip(
+                        label: Text(c),
+                        selected: category == c,
+                        onSelected: (_) {
+                          setState(() => category = c);
+                        },
+                        selectedColor: _primary,
+                        labelStyle: TextStyle(
+                          color: category == c ? Colors.white : _fg,
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
               const SizedBox(height: 30),
               LayoutBuilder(
@@ -2960,8 +3044,7 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: list.length,
-                    gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: n,
                       crossAxisSpacing: 18,
                       mainAxisSpacing: 18,
@@ -2983,39 +3066,145 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
   // ============================================================
 
   Widget _login() {
-    return _formPage(
-      title: tr(lang, 'Minha conta', 'My account', 'Mi cuenta'),
-      subtitle: tr(
-        lang,
-        'Entre para acompanhar compras ou gerenciar seu perfil de artesã.',
-        'Sign in to manage purchases or your artisan profile.',
-        'Inicia sesión para gestionar compras o tu perfil de artesana.',
-      ),
-      fields: ['E-mail', 'Senha'],
-      button: tr(lang, 'Entrar', 'Sign in', 'Entrar'),
-      footer: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('Ainda não tem conta?'),
-          TextButton(
-            onPressed: () => go(Page.accountSignup),
-            child: Text(
-              tr(lang, 'Criar conta', 'Create account', 'Crear cuenta'),
-            ),
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(28),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 560),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 55),
+              Text(
+                tr(lang, 'Minha conta', 'My account', 'Mi cuenta'),
+                style: const TextStyle(
+                  fontSize: 42,
+                  height: 1.05,
+                  fontWeight: FontWeight.w800,
+                  color: _fg,
+                ),
+              ),
+              const SizedBox(height: 14),
+              Text(
+                tr(
+                  lang,
+                  'Entre para acompanhar compras ou gerenciar seu perfil de artesã.',
+                  'Sign in to manage purchases or your artisan profile.',
+                  'Inicia sesión para gestionar compras o tu perfil de artesana.',
+                ),
+                style: const TextStyle(
+                  color: _dim,
+                  fontSize: 15,
+                  height: 1.6,
+                ),
+              ),
+              const SizedBox(height: 30),
+              TextFormField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'E-mail',
+                  filled: true,
+                  fillColor: _card,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: _border),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: _border),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              TextFormField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Senha',
+                  filled: true,
+                  fillColor: _card,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: _border),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: _border),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (emailController.text.trim().isEmpty) {
+                      _snack(tr(
+                        lang,
+                        'Digite seu e-mail para continuar.',
+                        'Enter your email to continue.',
+                        'Ingresa tu correo para continuar.',
+                      ));
+                      return;
+                    }
+
+                    // PROVISÓRIO: enquanto não existe backend de autenticação,
+                    // o tipo de conta é detectado pelo padrão do e-mail.
+                    // Quando o backend existir, essa checagem deve ser
+                    // substituída pela resposta real da API de login.
+                    final email = emailController.text.trim().toLowerCase();
+                    final isArtisan = email.contains('artesa');
+
+                    signedIn = true;
+                    role = isArtisan ? 'artisan' : 'buyer';
+                    if (isArtisan) {
+                      artisanSection = ArtisanSection.overview;
+                    }
+
+                    _snack(tr(lang, 'Login realizado com sucesso!',
+                        'Signed in successfully!', '¡Sesión iniciada con éxito!'));
+
+                    if (isArtisan) {
+                      go(Page.artisan);
+                    } else if (_checkoutAfterAuth) {
+                      _checkoutAfterAuth = false;
+                      go(Page.checkout);
+                    } else {
+                      go(Page.home);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _primary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 17),
+                  ),
+                  child: Text(tr(lang, 'Entrar', 'Sign in', 'Entrar')),
+                ),
+              ),
+              const SizedBox(height: 15),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Ainda não tem conta?'),
+                    TextButton(
+                      onPressed: () => go(Page.accountSignup),
+                      child: Text(
+                        tr(lang, 'Criar conta', 'Create account', 'Crear cuenta'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 80),
+            ],
           ),
-        ],
+        ),
       ),
-      onSubmit: () {
-        signedIn = true;
-        role = 'buyer';
-        _snack(tr(lang, 'Login realizado com sucesso!', 'Signed in successfully!', '¡Sesión iniciada con éxito!'));
-        if (_checkoutAfterAuth) {
-          _checkoutAfterAuth = false;
-          go(Page.checkout);
-        } else {
-          go(Page.home);
-        }
-      },
     );
   }
 
@@ -3054,7 +3243,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
       onSubmit: () {
         signedIn = true;
         role = 'buyer';
-        _snack(tr(lang, 'Conta criada com sucesso!', 'Account created successfully!', '¡Cuenta creada con éxito!'));
+        _snack(tr(lang, 'Conta criada com sucesso!',
+            'Account created successfully!', '¡Cuenta creada con éxito!'));
         if (_checkoutAfterAuth) {
           _checkoutAfterAuth = false;
           go(Page.checkout);
@@ -3223,7 +3413,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                 onPressed: () => go(Page.products),
                 icon: const Icon(Icons.arrow_back),
                 label: Text(
-                  tr(lang, 'Continuar comprando', 'Continue shopping', 'Seguir comprando'),
+                  tr(lang, 'Continuar comprando', 'Continue shopping',
+                      'Seguir comprando'),
                 ),
               ),
               const SizedBox(height: 12),
@@ -3253,7 +3444,6 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                 style: const TextStyle(color: _dim, fontSize: 14),
               ),
               const SizedBox(height: 28),
-
               if (cartItems.isEmpty)
                 _emptyCart()
               else ...[
@@ -3266,9 +3456,7 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     borderRadius: BorderRadius.circular(18),
                   ),
                   child: Column(
-                    children: selected
-                        .map((i) => _cartItem(i))
-                        .toList(),
+                    children: selected.map((i) => _cartItem(i)).toList(),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -3320,7 +3508,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     onPressed: _openCheckout,
                     icon: const Icon(Icons.lock_outline),
                     label: Text(
-                      tr(lang, 'Finalizar compra', 'Checkout', 'Finalizar compra'),
+                      tr(lang, 'Finalizar compra', 'Checkout',
+                          'Finalizar compra'),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _primary,
@@ -3333,7 +3522,6 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                   ),
                 ),
               ],
-
               const SizedBox(height: 48),
               _cartSuggestions(selected),
             ],
@@ -3369,7 +3557,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
       builder: (dialogContext) {
         return Dialog(
           backgroundColor: Colors.white,
-          insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          insetPadding:
+              const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 540),
@@ -3387,7 +3576,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                       ),
                     ),
                     Text(
-                      tr(lang, 'Já sou cliente / Entrar', 'Sign in', 'Ya soy cliente / Entrar'),
+                      tr(lang, 'Já sou cliente / Entrar', 'Sign in',
+                          'Ya soy cliente / Entrar'),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: _fg,
@@ -3399,11 +3589,17 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.lock_outline, size: 16, color: Color(0xFF15945E)),
+                        const Icon(Icons.lock_outline,
+                            size: 16, color: Color(0xFF15945E)),
                         const SizedBox(width: 5),
                         Text(
-                          tr(lang, 'Seus dados estão protegidos.', 'Your data is protected.', 'Tus datos están protegidos.'),
-                          style: const TextStyle(color: Color(0xFF15945E), fontSize: 12.5),
+                          tr(
+                              lang,
+                              'Seus dados estão protegidos.',
+                              'Your data is protected.',
+                              'Tus datos están protegidos.'),
+                          style: const TextStyle(
+                              color: Color(0xFF15945E), fontSize: 12.5),
                         ),
                       ],
                     ),
@@ -3411,7 +3607,11 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        tr(lang, 'Número de celular ou E-mail:', 'Phone number or Email:', 'Número de celular o correo:'),
+                        tr(
+                            lang,
+                            'Número de celular ou E-mail:',
+                            'Phone number or Email:',
+                            'Número de celular o correo:'),
                         style: const TextStyle(color: _dim, fontSize: 13),
                       ),
                     ),
@@ -3457,7 +3657,11 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (emailController.text.trim().isEmpty) {
-                            _snack(tr(lang, 'Digite seu e-mail ou celular.', 'Enter your email or phone.', 'Ingresa tu correo o celular.'));
+                            _snack(tr(
+                                lang,
+                                'Digite seu e-mail ou celular.',
+                                'Enter your email or phone.',
+                                'Ingresa tu correo o celular.'));
                             return;
                           }
                           setState(() {
@@ -3465,12 +3669,17 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                             role = 'buyer';
                           });
                           Navigator.of(dialogContext).pop();
-                          _snack(tr(lang, 'Login realizado! Seus dados do checkout continuam salvos.', 'Signed in! Your checkout data is preserved.', '¡Sesión iniciada! Tus datos del checkout se mantienen.'));
+                          _snack(tr(
+                              lang,
+                              'Login realizado! Seus dados do checkout continuam salvos.',
+                              'Signed in! Your checkout data is preserved.',
+                              '¡Sesión iniciada! Tus datos del checkout se mantienen.'));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: _fg,
                           foregroundColor: Colors.white,
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero),
                         ),
                         child: Text(
                           tr(lang, 'CONTINUAR', 'CONTINUE', 'CONTINUAR'),
@@ -3481,7 +3690,11 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     const SizedBox(height: 14),
                     TextButton(
                       onPressed: () {},
-                      child: Text(tr(lang, 'Não consegue acessar sua conta?', 'Can’t access your account?', '¿No puedes acceder a tu cuenta?')),
+                      child: Text(tr(
+                          lang,
+                          'Não consegue acessar sua conta?',
+                          'Can’t access your account?',
+                          '¿No puedes acceder a tu cuenta?')),
                     ),
                     const SizedBox(height: 10),
                     Row(
@@ -3489,7 +3702,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                         const Expanded(child: Divider()),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 14),
-                          child: Text(tr(lang, 'Ou', 'Or', 'O'), style: const TextStyle(color: Colors.grey)),
+                          child: Text(tr(lang, 'Ou', 'Or', 'O'),
+                              style: const TextStyle(color: Colors.grey)),
                         ),
                         const Expanded(child: Divider()),
                       ],
@@ -3503,13 +3717,17 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                         });
                         Navigator.of(dialogContext).pop();
                       },
-                      icon: const Text('G', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
-                      label: Text(tr(lang, 'Prosseguir com Google', 'Continue with Google', 'Continuar con Google')),
+                      icon: const Text('G',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w900)),
+                      label: Text(tr(lang, 'Prosseguir com Google',
+                          'Continue with Google', 'Continuar con Google')),
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
                         foregroundColor: _fg,
                         side: BorderSide(color: Colors.grey.shade300),
-                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -3521,20 +3739,28 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                         });
                         Navigator.of(dialogContext).pop();
                       },
-                      icon: const Icon(Icons.facebook, color: Color(0xFF4054B2)),
-                      label: Text(tr(lang, 'Prosseguir com Facebook', 'Continue with Facebook', 'Continuar con Facebook')),
+                      icon:
+                          const Icon(Icons.facebook, color: Color(0xFF4054B2)),
+                      label: Text(tr(lang, 'Prosseguir com Facebook',
+                          'Continue with Facebook', 'Continuar con Facebook')),
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
                         foregroundColor: _fg,
                         side: BorderSide(color: Colors.grey.shade300),
-                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero),
                       ),
                     ),
                     const SizedBox(height: 18),
                     Text(
-                      tr(lang, 'Ao continuar, você concorda com nossa Política de Privacidade e Termos e condições.', 'By continuing, you agree to our Privacy Policy and Terms and Conditions.', 'Al continuar, aceptas nuestra Política de Privacidad y Términos y condiciones.'),
+                      tr(
+                          lang,
+                          'Ao continuar, você concorda com nossa Política de Privacidade e Termos e condições.',
+                          'By continuing, you agree to our Privacy Policy and Terms and Conditions.',
+                          'Al continuar, aceptas nuestra Política de Privacidad y Términos y condiciones.'),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: _dim, fontSize: 11.5, height: 1.4),
+                      style: const TextStyle(
+                          color: _dim, fontSize: 11.5, height: 1.4),
                     ),
                   ],
                 ),
@@ -3615,7 +3841,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
           ),
           const SizedBox(height: 20),
           Text(
-            tr(lang, 'Seu carrinho está vazio', 'Your cart is empty', 'Tu carrito está vacío'),
+            tr(lang, 'Seu carrinho está vazio', 'Your cart is empty',
+                'Tu carrito está vacío'),
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: _fg,
@@ -3754,9 +3981,15 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
         Text(
           tr(
             lang,
-            cartItems.isEmpty ? 'Você pode gostar destas peças' : 'Continue descobrindo',
-            cartItems.isEmpty ? 'You may like these pieces' : 'Keep discovering',
-            cartItems.isEmpty ? 'Estas piezas podrían gustarte' : 'Sigue descubriendo',
+            cartItems.isEmpty
+                ? 'Você pode gostar destas peças'
+                : 'Continue descobrindo',
+            cartItems.isEmpty
+                ? 'You may like these pieces'
+                : 'Keep discovering',
+            cartItems.isEmpty
+                ? 'Estas piezas podrían gustarte'
+                : 'Sigue descubriendo',
           ),
           style: const TextStyle(
             color: _fg,
@@ -3872,168 +4105,475 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
   // ============================================================
 
   Widget _buyer() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(28),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1050),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 35),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      tr(lang, 'Minha conta', 'My account', 'Mi cuenta'),
-                      style: const TextStyle(
-                        fontSize: 38,
-                        fontWeight: FontWeight.w800,
-                        color: _fg,
-                      ),
-                    ),
+    final wide = MediaQuery.sizeOf(context).width > 850;
+
+    final items = {
+      tr(lang, 'Visão geral', 'Overview', 'Resumen'): 'overview',
+      tr(lang, 'Meus pedidos', 'My orders', 'Mis pedidos'): 'orders',
+      tr(lang, 'Favoritos', 'Favorites', 'Favoritos'): 'favorites',
+      tr(lang, 'Endereços', 'Addresses', 'Direcciones'): 'addresses',
+      tr(lang, 'Configurações', 'Settings', 'Configuración'): 'settings',
+    };
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (wide)
+          Container(
+            width: 260,
+            constraints: const BoxConstraints(minHeight: 600),
+            decoration: const BoxDecoration(
+              color: Color(0xFFFBF5E9),
+              border: Border(right: BorderSide(color: _border)),
+            ),
+            padding: const EdgeInsets.fromLTRB(20, 35, 20, 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 52,
+                  height: 52,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFE2F0EC),
+                    shape: BoxShape.circle,
                   ),
-                  TextButton.icon(
-                    onPressed: () {
-                      signedIn = false;
-                      role = 'buyer';
-                      go(Page.home);
-                    },
-                    icon: const Icon(Icons.logout),
-                    label: Text(
-                      tr(lang, 'Sair', 'Sign out', 'Salir'),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 25),
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                children: [
-                  _accountTile(
-                    Icons.receipt_long_outlined,
-                    tr(lang, 'Meus pedidos', 'My orders', 'Mis pedidos'),
-                    '2',
-                  ),
-                  InkWell(
-                    onTap: _openCart,
-                    borderRadius: BorderRadius.circular(12),
-                    child: _accountTile(
-                      Icons.shopping_cart_outlined,
-                      tr(lang, 'Carrinho', 'Cart', 'Carrito'),
-                      '${cartItems.length}',
-                    ),
-                  ),
-                  _accountTile(
-                    Icons.favorite_border,
-                    tr(lang, 'Favoritos', 'Favorites', 'Favoritos'),
-                    '${favorites.length}',
-                  ),
-                  _accountTile(
-                    Icons.settings_outlined,
-                    tr(lang, 'Configurações', 'Settings', 'Configuración'),
-                    '',
-                  ),
-                ],
-              ),
-              const SizedBox(height: 35),
-              Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: _card,
-                  border: Border.all(color: _border),
-                  borderRadius: BorderRadius.circular(14),
+                  alignment: Alignment.center,
+                  child: const Icon(Icons.person, color: _primary, size: 26),
                 ),
+                const SizedBox(height: 14),
+                Text(
+                  tr(lang, 'Bem-vinda de volta,', 'Welcome back,', 'Bienvenida de nuevo,'),
+                  style: const TextStyle(color: _dim, fontSize: 12.5),
+                ),
+                const Text(
+                  'Ana',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                    color: _fg,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ...items.entries.map(
+                  (e) => _buyerSideItem(e.key, e.value),
+                ),
+                const Spacer(),
+                TextButton.icon(
+                  onPressed: () {
+                    signedIn = false;
+                    role = 'buyer';
+                    go(Page.home);
+                  },
+                  icon: const Icon(Icons.logout, size: 18),
+                  label: Text(tr(lang, 'Sair da conta', 'Sign out', 'Cerrar sesión')),
+                  style: TextButton.styleFrom(foregroundColor: _dim),
+                ),
+              ],
+            ),
+          ),
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(28, 30, 28, 70),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1000),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      tr(
-                        lang,
-                        'Seus próximos passos',
-                        'Your next steps',
-                        'Tus próximos pasos',
+                    if (!wide) ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _buyerSectionTitle(),
+                            style: const TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w800,
+                              color: _fg,
+                            ),
+                          ),
+                          TextButton.icon(
+                            onPressed: () {
+                              signedIn = false;
+                              role = 'buyer';
+                              go(Page.home);
+                            },
+                            icon: const Icon(Icons.logout, size: 18),
+                            label: Text(tr(lang, 'Sair', 'Sign out', 'Salir')),
+                          ),
+                        ],
                       ),
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: _fg,
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: items.entries
+                            .map(
+                              (e) => ChoiceChip(
+                                label: Text(e.key),
+                                selected: buyerSection == e.value,
+                                onSelected: (_) =>
+                                    setState(() => buyerSection = e.value),
+                                selectedColor: _primary,
+                                labelStyle: TextStyle(
+                                  color: buyerSection == e.value
+                                      ? Colors.white
+                                      : _fg,
+                                ),
+                              ),
+                            )
+                            .toList(),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      tr(
-                        lang,
-                        'Explore o catálogo, salve seus favoritos e acompanhe suas compras por aqui.',
-                        'Explore the catalogue, save favorites and track your purchases here.',
-                        'Explora el catálogo, guarda favoritos y sigue tus compras aquí.',
-                      ),
-                      style: const TextStyle(
-                        color: _dim,
-                        height: 1.6,
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    ElevatedButton(
-                      onPressed: () => go(Page.products),
-                      child: Text(
-                        tr(
-                          lang,
-                          'Ir para a loja',
-                          'Go to store',
-                          'Ir a la tienda',
+                      const SizedBox(height: 25),
+                    ] else ...[
+                      Text(
+                        _buyerSectionTitle(),
+                        style: const TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.w800,
+                          color: _fg,
                         ),
                       ),
-                    ),
+                      const SizedBox(height: 25),
+                    ],
+                    _buyerContent(),
                   ],
                 ),
               ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buyerSideItem(String label, String value) {
+    final selected = buyerSection == value;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: ListTile(
+        selected: selected,
+        selectedTileColor: const Color(0xFFE2F0EC),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        leading: Icon(
+          _buyerIconFor(value),
+          size: 19,
+          color: selected ? _primary : _dim,
+        ),
+        title: Text(
+          label,
+          style: TextStyle(
+            color: selected ? _primary : _fg,
+            fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
+            fontSize: 13.5,
+          ),
+        ),
+        onTap: () => setState(() => buyerSection = value),
+      ),
+    );
+  }
+
+  IconData _buyerIconFor(String value) {
+    switch (value) {
+      case 'orders':
+        return Icons.receipt_long_outlined;
+      case 'favorites':
+        return Icons.favorite_border;
+      case 'addresses':
+        return Icons.location_on_outlined;
+      case 'settings':
+        return Icons.settings_outlined;
+      default:
+        return Icons.dashboard_outlined;
+    }
+  }
+
+  String _buyerSectionTitle() {
+    return {
+          'overview': tr(lang, 'Minha conta', 'My account', 'Mi cuenta'),
+          'orders': tr(lang, 'Meus pedidos', 'My orders', 'Mis pedidos'),
+          'favorites': tr(lang, 'Favoritos', 'Favorites', 'Favoritos'),
+          'addresses': tr(lang, 'Endereços', 'Addresses', 'Direcciones'),
+          'settings': tr(lang, 'Configurações', 'Settings', 'Configuración'),
+        }[buyerSection] ??
+        tr(lang, 'Minha conta', 'My account', 'Mi cuenta');
+  }
+
+  Widget _buyerContent() {
+    switch (buyerSection) {
+      case 'orders':
+        return _buyerOrdersSection();
+      case 'favorites':
+        return _buyerFavoritesSection();
+      case 'addresses':
+        return _buyerAddressesSection();
+      case 'settings':
+        return _buyerSettingsSection();
+      default:
+        return _buyerOverviewSection();
+    }
+  }
+
+  Widget _buyerOverviewSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children: [
+            _buyerStat(
+              Icons.receipt_long_outlined,
+              tr(lang, 'Meus pedidos', 'My orders', 'Mis pedidos'),
+              '2',
+              'orders',
+            ),
+            _buyerStat(
+              Icons.shopping_cart_outlined,
+              tr(lang, 'Carrinho', 'Cart', 'Carrito'),
+              '${cartItems.length}',
+              null,
+              onTapOverride: _openCart,
+            ),
+            _buyerStat(
+              Icons.favorite_border,
+              tr(lang, 'Favoritos', 'Favorites', 'Favoritos'),
+              '${favorites.length}',
+              'favorites',
+            ),
+            _buyerStat(
+              Icons.location_on_outlined,
+              tr(lang, 'Endereços', 'Addresses', 'Direcciones'),
+              '1',
+              'addresses',
+            ),
+          ],
+        ),
+        const SizedBox(height: 30),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: _card,
+            border: Border.all(color: _border),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                tr(lang, 'Continue de onde parou', 'Continue where you left off',
+                    'Continúa donde lo dejaste'),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                  color: _fg,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                tr(
+                  lang,
+                  'Explore o catálogo, salve seus favoritos e acompanhe suas compras por aqui.',
+                  'Explore the catalogue, save favorites and track your purchases here.',
+                  'Explora el catálogo, guarda favoritos y sigue tus compras aquí.',
+                ),
+                style: const TextStyle(color: _dim, height: 1.6),
+              ),
+              const SizedBox(height: 15),
+              ElevatedButton(
+                onPressed: () => go(Page.products),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _primary,
+                  foregroundColor: Colors.white,
+                ),
+                child: Text(tr(lang, 'Ir para a loja', 'Go to store', 'Ir a la tienda')),
+              ),
             ],
           ),
+        ),
+        const SizedBox(height: 30),
+        _panel(
+          tr(lang, 'Pedidos recentes', 'Recent orders', 'Pedidos recientes'),
+          _buyerOrderList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buyerStat(
+    IconData icon,
+    String label,
+    String value,
+    String? target, {
+    VoidCallback? onTapOverride,
+  }) {
+    return InkWell(
+      onTap: onTapOverride ?? (target != null ? () => setState(() => buyerSection = target) : null),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: 210,
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: _card,
+          border: Border.all(color: _border),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: const Color(0xFFE4F0EC),
+                borderRadius: BorderRadius.circular(11),
+              ),
+              alignment: Alignment.center,
+              child: Icon(icon, color: _primary, size: 21),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    value,
+                    style: const TextStyle(
+                      color: _fg,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    label,
+                    style: const TextStyle(color: _dim, fontSize: 11.5),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _accountTile(
-    IconData icon,
-    String title,
-    String value,
-  ) {
-    return Container(
-      width: 235,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: _card,
-        border: Border.all(color: _border),
-        borderRadius: BorderRadius.circular(12),
+  Widget _buyerOrderList() {
+    final orders = [
+      ['#HLP-4821', 'Cesta Trançada Sol', 'R\$ 85', tr(lang, 'Entregue', 'Delivered', 'Entregado')],
+      ['#HLP-4790', 'Colar Raízes', 'R\$ 120', tr(lang, 'A caminho', 'In transit', 'En camino')],
+    ];
+
+    return Column(
+      children: orders
+          .map(
+            (o) => ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const CircleAvatar(
+                backgroundColor: Color(0xFFE2F0EC),
+                child: Icon(Icons.shopping_bag_outlined, color: _primary, size: 19),
+              ),
+              title: Text(o[1], style: const TextStyle(fontWeight: FontWeight.w800)),
+              subtitle: Text('${o[0]} · ${o[3]}'),
+              trailing: Text(o[2], style: const TextStyle(fontWeight: FontWeight.w800)),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Widget _buyerOrdersSection() {
+    return _panel(
+      tr(lang, 'Meus pedidos', 'My orders', 'Mis pedidos'),
+      _buyerOrderList(),
+    );
+  }
+
+  Widget _buyerFavoritesSection() {
+    if (favorites.isEmpty) {
+      return _panel(
+        tr(lang, 'Favoritos', 'Favorites', 'Favoritos'),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Text(
+            tr(
+              lang,
+              'Você ainda não favoritou nenhum produto.',
+              'You have not favorited any products yet.',
+              'Todavía no has marcado productos como favoritos.',
+            ),
+            style: const TextStyle(color: _dim),
+          ),
+        ),
+      );
+    }
+
+    return _panel(
+      tr(lang, 'Favoritos', 'Favorites', 'Favoritos'),
+      LayoutBuilder(
+        builder: (_, c) {
+          final n = c.maxWidth > 700 ? 3 : c.maxWidth > 420 ? 2 : 1;
+          final list = favorites.toList();
+
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: list.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: n,
+              crossAxisSpacing: 14,
+              mainAxisSpacing: 14,
+              childAspectRatio: .78,
+            ),
+            itemBuilder: (_, i) => _productCard(list[i]),
+          );
+        },
       ),
-      child: Row(
+    );
+  }
+
+  Widget _buyerAddressesSection() {
+    return _panel(
+      tr(lang, 'Endereços', 'Addresses', 'Direcciones'),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: _primary),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w800,
-                    color: _fg,
-                  ),
-                ),
-                if (value.isNotEmpty)
-                  Text(
-                    value,
-                    style: const TextStyle(
-                      color: _dim,
-                      fontSize: 12,
-                    ),
-                  ),
-              ],
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.home_outlined, color: _primary),
+            title: const Text('Rua das Flores, 123', style: TextStyle(fontWeight: FontWeight.w700)),
+            subtitle: const Text('Heliópolis, São Paulo - SP'),
+            trailing: TextButton(onPressed: () {}, child: Text(tr(lang, 'Editar', 'Edit', 'Editar'))),
+          ),
+          const Divider(),
+          TextButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.add),
+            label: Text(tr(lang, 'Adicionar endereço', 'Add address', 'Añadir dirección')),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buyerSettingsSection() {
+    return _panel(
+      tr(lang, 'Configurações', 'Settings', 'Configuración'),
+      Column(
+        children: [
+          SwitchListTile(
+            value: true,
+            onChanged: (_) {},
+            title: Text(tr(lang, 'Receber novidades por e-mail', 'Receive news by email', 'Recibir novedades por correo')),
+          ),
+          SwitchListTile(
+            value: true,
+            onChanged: (_) {},
+            title: Text(tr(lang, 'Avisos sobre pedidos', 'Order notifications', 'Avisos de pedidos')),
+          ),
+          ListTile(
+            title: Text(tr(lang, 'Idioma', 'Language', 'Idioma')),
+            trailing: Text(
+              lang == Lang.pt ? 'Português' : lang == Lang.en ? 'English' : 'Español',
             ),
           ),
         ],
@@ -4095,7 +4635,11 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                     ),
                   ),
                   TextButton.icon(
-                    onPressed: () => go(Page.home),
+                    onPressed: () {
+                      signedIn = false;
+                      role = 'buyer';
+                      go(Page.home);
+                    },
                     icon: const Icon(Icons.logout),
                     label: const Text('Sair da conta'),
                   ),
@@ -4139,6 +4683,108 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
     );
   }
 
+  Future<void> _showAddProductDialog() async {
+    final nameController = TextEditingController();
+    final priceController = TextEditingController();
+    final categoryController = TextEditingController(text: 'Casa');
+    final imageController = TextEditingController();
+
+    await showDialog<void>(
+      context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.45),
+      builder: (dialogContext) {
+        return AlertDialog(
+          backgroundColor: _card,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Text(
+            tr(lang, 'Novo produto', 'New product', 'Nuevo producto'),
+            style: const TextStyle(fontWeight: FontWeight.w800, color: _fg),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: tr(lang, 'Nome do produto', 'Product name', 'Nombre del producto'),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: priceController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: tr(lang, 'Preço (ex: 85,00)', 'Price', 'Precio'),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: categoryController,
+                  decoration: InputDecoration(
+                    labelText: tr(lang, 'Categoria', 'Category', 'Categoría'),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: imageController,
+                  decoration: InputDecoration(
+                    labelText: tr(lang, 'URL da imagem (opcional)', 'Image URL (optional)', 'URL de imagen (opcional)'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(tr(lang, 'Cancelar', 'Cancel', 'Cancelar')),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (nameController.text.trim().isEmpty) {
+                  _snack(tr(
+                    lang,
+                    'Digite o nome do produto.',
+                    'Enter a product name.',
+                    'Ingresa el nombre del producto.',
+                  ));
+                  return;
+                }
+                setState(() {
+                  _customProducts.add({
+                    'name': nameController.text.trim(),
+                    'artisan': 'Maria',
+                    'price':
+                        'R\$ ${priceController.text.trim().isEmpty ? '0,00' : priceController.text.trim()}',
+                    'category': categoryController.text.trim().isEmpty
+                        ? 'Casa'
+                        : categoryController.text.trim(),
+                    'image': imageController.text.trim().isEmpty
+                        ? 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=900&auto=format&fit=crop'
+                        : imageController.text.trim(),
+                  });
+                });
+                Navigator.of(dialogContext).pop();
+                _snack(tr(
+                  lang,
+                  'Produto adicionado à sua vitrine!',
+                  'Product added to your showcase!',
+                  '¡Producto añadido a tu vitrina!',
+                ));
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _primary,
+                foregroundColor: Colors.white,
+              ),
+              child: Text(tr(lang, 'Salvar', 'Save', 'Guardar')),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget _artisanTop() {
     final title = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -4168,17 +4814,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
       spacing: 8,
       runSpacing: 8,
       children: [
-        OutlinedButton.icon(
-          onPressed: () {
-            setState(
-              () => artisanSection = ArtisanSection.export,
-            );
-          },
-          icon: const Icon(Icons.public),
-          label: const Text('Exportação'),
-        ),
         ElevatedButton.icon(
-          onPressed: () => _snack('Produto salvo!'),
+          onPressed: _showAddProductDialog,
           icon: const Icon(Icons.add),
           label: const Text('Adicionar produto'),
         ),
@@ -4491,6 +5128,8 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                       ? 2
                       : 1;
 
+              final allProducts = [..._products.take(4), ..._customProducts];
+
               return GridView.count(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -4498,16 +5137,14 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                 crossAxisSpacing: 14,
                 mainAxisSpacing: 14,
                 childAspectRatio: .75,
-                children: _products
-                    .take(4)
+                children: allProducts
                     .map(
                       (p) => Card(
                         color: _card,
                         elevation: 0,
                         clipBehavior: Clip.antiAlias,
                         child: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child: Image.network(
@@ -4524,8 +5161,7 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
                             Padding(
                               padding: const EdgeInsets.all(12),
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     p['category']!,
@@ -4614,41 +5250,173 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
   }
 
   Widget _artisanExport() {
-    return _panel(
-      'Alcançar o mundo',
-      Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(22),
+          decoration: BoxDecoration(
+            color: _primary,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.public, color: Colors.white, size: 30),
+              const SizedBox(height: 12),
+              Text(
+                tr(lang, 'Guia completo: vendendo para fora do Brasil',
+                    'Complete guide: selling outside Brazil',
+                    'Guía completa: vendiendo fuera de Brasil'),
+                style: const TextStyle(
+                    color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                tr(
+                  lang,
+                  'Nunca exportou antes? Sem problema. Este passo a passo explica documentos, taxas e frete de um jeito simples.',
+                  'Never exported before? No problem. This step-by-step explains documents, taxes and shipping in a simple way.',
+                  '¿Nunca exportaste antes? No hay problema. Esta guía explica documentos, impuestos y envío de forma simple.',
+                ),
+                style: const TextStyle(color: Colors.white, height: 1.5),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        _exportStep(
+          '1',
+          tr(lang, 'Quem pode vender para fora?', 'Who can sell abroad?',
+              '¿Quién puede vender al extranjero?'),
+          tr(
+            lang,
+            'Qualquer pessoa física com CPF pode vender ocasionalmente para o exterior, sem precisar abrir empresa. Se as vendas internacionais crescerem, vale considerar se cadastrar como MEI (Microempreendedor Individual) para emitir nota fiscal e ter mais organização.',
+            'Any individual with a CPF (tax ID) can occasionally sell abroad without opening a company. If international sales grow, it may be worth registering as an MEI (Brazilian micro-entrepreneur) to issue invoices and stay organized.',
+            'Cualquier persona con CPF puede vender ocasionalmente al exterior sin abrir una empresa. Si las ventas crecen, conviene registrarse como MEI para emitir factura y mantener el orden.',
+          ),
+        ),
+        _exportStep(
+          '2',
+          tr(lang, 'Documentos e nota fiscal', 'Documents and invoice',
+              'Documentos y factura'),
+          tr(
+            lang,
+            'Para envios internacionais, os Correios pedem uma Declaração de Conteúdo (formulário simples informando o que está sendo enviado e o valor). Se você tiver CNPJ/MEI, emita a nota fiscal de exportação; como pessoa física, a própria declaração dos Correios costuma ser suficiente para pacotes pequenos.',
+            'For international shipments, Correios (Brazilian postal service) requires a Content Declaration (a simple form stating what is being sent and its value). If you have a CNPJ/MEI, issue an export invoice; as an individual, the postal declaration is usually enough for small packages.',
+            'Para envíos internacionales, Correios exige una Declaración de Contenido (formulario simple con lo que se envía y su valor). Si tienes CNPJ/MEI, emite la factura de exportación; como persona física, la declaración postal suele ser suficiente para paquetes pequeños.',
+          ),
+        ),
+        _exportStep(
+          '3',
+          tr(lang, 'Taxas e impostos', 'Fees and taxes', 'Tarifas e impuestos'),
+          tr(
+            lang,
+            'No Brasil, a exportação de pequenos volumes por pessoa física geralmente não paga Imposto de Exportação. O comprador no país de destino é quem pode pagar taxas de importação (impostos alfandegários) — deixe isso claro na descrição do produto para evitar surpresas. Vendas pelo Exporta Fácil dos Correios (até US\$ 500 por envio) simplificam bastante esse processo.',
+            'In Brazil, small exports by individuals generally do not pay Export Tax. The buyer in the destination country may need to pay import duties (customs fees) — make this clear in the product description to avoid surprises. Selling through Correios Exporta Fácil (up to US\$500 per shipment) simplifies this process a lot.',
+            'En Brasil, la exportación de pequeños volúmenes por persona física generalmente no paga Impuesto de Exportación. El comprador en el país destino puede pagar aranceles de importación — acláralo en la descripción para evitar sorpresas. Vender vía Correios Exporta Fácil (hasta US\$500 por envío) simplifica mucho el proceso.',
+          ),
+        ),
+        _exportStep(
+          '4',
+          tr(lang, 'Como enviar (frete internacional)',
+              'How to ship (international freight)', 'Cómo enviar (flete internacional)'),
+          tr(
+            lang,
+            'A opção mais simples e barata para pequenos artesãos é o serviço Exporta Fácil dos Correios, feito para vendas online internacionais. Para volumes maiores ou entregas mais rápidas, transportadoras como DHL, FedEx ou UPS também atendem, com custo mais alto.',
+            'The simplest and cheapest option for small artisans is the Correios Exporta Fácil service, designed for international online sales. For larger volumes or faster delivery, couriers like DHL, FedEx or UPS also work, at a higher cost.',
+            'La opción más simple y económica para pequeñas artesanas es el servicio Exporta Fácil de Correios, pensado para ventas online internacionales. Para volúmenes mayores o entregas más rápidas, transportistas como DHL, FedEx o UPS también funcionan, a mayor costo.',
+          ),
+        ),
+        _exportStep(
+          '5',
+          tr(lang, 'Embalagem e etiquetas', 'Packaging and labels',
+              'Embalaje y etiquetas'),
+          tr(
+            lang,
+            'Embale bem a peça para proteger durante o transporte internacional (que pode levar mais tempo). Inclua uma etiqueta com a descrição do produto em português e inglês, e o valor declarado deve ser real — declarar valores muito baixos pode causar problemas na alfândega do país de destino.',
+            'Pack the piece well to protect it during international transport (which can take longer). Include a label with the product description in Portuguese and English, and the declared value should be accurate — declaring very low values can cause problems at customs in the destination country.',
+            'Empaca bien la pieza para protegerla durante el transporte internacional (que puede tardar más). Incluye una etiqueta con la descripción en portugués e inglés, y el valor declarado debe ser real — declarar valores muy bajos puede causar problemas en la aduana del país destino.',
+          ),
+        ),
+        _exportStep(
+          '6',
+          tr(lang, 'Recebendo o pagamento em outra moeda',
+              'Receiving payment in another currency',
+              'Recibiendo el pago en otra moneda'),
+          tr(
+            lang,
+            'A plataforma converte os preços automaticamente para USD e EUR conforme o idioma do comprador, mas o recebimento real do dinheiro depende do método de pagamento combinado (PIX internacional, PayPal, Wise, transferência bancária). Combine sempre a forma de pagamento antes de enviar o produto.',
+            'The platform automatically converts prices to USD and EUR based on the buyer\'s language, but actually receiving the money depends on the agreed payment method (international PIX, PayPal, Wise, bank transfer). Always agree on the payment method before shipping the product.',
+            'La plataforma convierte los precios automáticamente a USD y EUR según el idioma del comprador, pero recibir el dinero depende del método de pago acordado (PIX internacional, PayPal, Wise, transferencia bancaria). Acuerda siempre la forma de pago antes de enviar el producto.',
+          ),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: const Color(0xFFE6F0EA),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.chat_bubble_outline, color: _primary),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  tr(
+                    lang,
+                    'Ficou com dúvida em algum passo? Use o assistente virtual (ícone de chat) ou fale com a equipe de suporte da plataforma.',
+                    'Still have questions about a step? Use the virtual assistant (chat icon) or contact the platform support team.',
+                    '¿Tienes dudas sobre algún paso? Usa el asistente virtual (ícono de chat) o contacta al equipo de soporte.',
+                  ),
+                  style: const TextStyle(color: _fg, height: 1.5),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _exportStep(String number, String title, String description) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: _card,
+        border: Border.all(color: _border),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Seu produto pode chegar a compradores internacionais. Organize fotos, descrição, materiais, custos e documentação.',
-            style: TextStyle(
-              color: _dim,
-              height: 1.6,
-            ),
+          Container(
+            width: 34,
+            height: 34,
+            decoration: const BoxDecoration(
+                color: Color(0xFFE2F0EC), shape: BoxShape.circle),
+            alignment: Alignment.center,
+            child: Text(number,
+                style: const TextStyle(color: _primary, fontWeight: FontWeight.w900)),
           ),
-          const SizedBox(height: 20),
-          ...[
-            '1. Prepare sua vitrine',
-            '2. Calcule custos e frete',
-            '3. Revise documentação',
-            '4. Escolha mercados',
-            '5. Converse com compradores',
-          ].map(
-            (x) => ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: Color(0xFFE2F0EC),
-                child: Icon(
-                  Icons.check,
-                  color: _primary,
-                  size: 17,
-                ),
-              ),
-              title: Text(
-                x,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                    style: const TextStyle(
+                        color: _fg, fontWeight: FontWeight.w800, fontSize: 16)),
+                const SizedBox(height: 6),
+                Text(description,
+                    style: const TextStyle(color: _dim, height: 1.55, fontSize: 13.5)),
+              ],
             ),
           ),
         ],
@@ -4918,7 +5686,6 @@ class _CurrentHomePageState extends State<CurrentHomePage> {
   }
 }
 
-
 class _CheckoutPage extends StatefulWidget {
   final Lang language;
   final List<int> itemIndexes;
@@ -5072,67 +5839,67 @@ class _CheckoutPageState extends State<_CheckoutPage> {
                 _sectionCard(
                   title: _tr(
                     '1. Como você quer comprar?',
-                  '1. How would you like to buy?',
-                  '1. ¿Cómo quieres comprar?',
+                    '1. How would you like to buy?',
+                    '1. ¿Cómo quieres comprar?',
+                  ),
+                  child: LayoutBuilder(
+                    builder: (_, c) {
+                      final count = c.maxWidth > 800 ? 3 : 1;
+                      return GridView.count(
+                        crossAxisCount: count,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: desktop ? 2.7 : 2.2,
+                        children: [
+                          _choiceCard(
+                            0,
+                            Icons.login_outlined,
+                            _tr(
+                              'Entrar na minha conta',
+                              'Sign in to my account',
+                              'Entrar en mi cuenta',
+                            ),
+                            _tr(
+                              'Use seus dados salvos.',
+                              'Use your saved details.',
+                              'Usa tus datos guardados.',
+                            ),
+                          ),
+                          _choiceCard(
+                            1,
+                            Icons.person_add_alt_1_outlined,
+                            _tr(
+                              'Criar uma conta',
+                              'Create an account',
+                              'Crear una cuenta',
+                            ),
+                            _tr(
+                              'Acompanhe seus pedidos depois.',
+                              'Track your orders later.',
+                              'Sigue tus pedidos después.',
+                            ),
+                          ),
+                          _choiceCard(
+                            2,
+                            Icons.shopping_bag_outlined,
+                            _tr(
+                              'Comprar sem conta',
+                              'Continue as guest',
+                              'Comprar sin cuenta',
+                            ),
+                            _tr(
+                              'Mais rápido, sem cadastro.',
+                              'Faster, no registration.',
+                              'Más rápido, sin registro.',
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
-                child: LayoutBuilder(
-                  builder: (_, c) {
-                    final count = c.maxWidth > 800 ? 3 : 1;
-                    return GridView.count(
-                      crossAxisCount: count,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: desktop ? 2.7 : 2.2,
-                      children: [
-                        _choiceCard(
-                          0,
-                          Icons.login_outlined,
-                          _tr(
-                            'Entrar na minha conta',
-                            'Sign in to my account',
-                            'Entrar en mi cuenta',
-                          ),
-                          _tr(
-                            'Use seus dados salvos.',
-                            'Use your saved details.',
-                            'Usa tus datos guardados.',
-                          ),
-                        ),
-                        _choiceCard(
-                          1,
-                          Icons.person_add_alt_1_outlined,
-                          _tr(
-                            'Criar uma conta',
-                            'Create an account',
-                            'Crear una cuenta',
-                          ),
-                          _tr(
-                            'Acompanhe seus pedidos depois.',
-                            'Track your orders later.',
-                            'Sigue tus pedidos después.',
-                          ),
-                        ),
-                        _choiceCard(
-                          2,
-                          Icons.shopping_bag_outlined,
-                          _tr(
-                            'Comprar sem conta',
-                            'Continue as guest',
-                            'Comprar sin cuenta',
-                          ),
-                          _tr(
-                            'Mais rápido, sem cadastro.',
-                            'Faster, no registration.',
-                            'Más rápido, sin registro.',
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
               if (_accessChoice != null) ...[
                 const SizedBox(height: 18),
                 _sectionCard(
@@ -5144,12 +5911,19 @@ class _CheckoutPageState extends State<_CheckoutPage> {
                   child: Column(
                     children: [
                       _fieldRow([
-                        _field(_name, _tr('Nome completo', 'Full name', 'Nombre completo')),
-                        _field(_email, _tr('E-mail', 'Email', 'Correo electrónico')),
+                        _field(
+                            _name,
+                            _tr('Nome completo', 'Full name',
+                                'Nombre completo')),
+                        _field(_email,
+                            _tr('E-mail', 'Email', 'Correo electrónico')),
                       ]),
                       const SizedBox(height: 12),
                       _fieldRow([
-                        _field(_phone, _tr('Telefone / WhatsApp', 'Phone / WhatsApp', 'Teléfono / WhatsApp')),
+                        _field(
+                            _phone,
+                            _tr('Telefone / WhatsApp', 'Phone / WhatsApp',
+                                'Teléfono / WhatsApp')),
                         _field(_cep, _tr('CEP', 'ZIP code', 'Código postal')),
                       ]),
                     ],
@@ -5158,14 +5932,23 @@ class _CheckoutPageState extends State<_CheckoutPage> {
                 const SizedBox(height: 18),
                 _sectionCard(
                   title: _tr(
-                    widget.signedIn ? '2. Endereço de entrega' : '3. Endereço de entrega',
-                    widget.signedIn ? '2. Delivery address' : '3. Delivery address',
-                    widget.signedIn ? '2. Dirección de entrega' : '3. Dirección de entrega',
+                    widget.signedIn
+                        ? '2. Endereço de entrega'
+                        : '3. Endereço de entrega',
+                    widget.signedIn
+                        ? '2. Delivery address'
+                        : '3. Delivery address',
+                    widget.signedIn
+                        ? '2. Dirección de entrega'
+                        : '3. Dirección de entrega',
                   ),
                   child: Column(
                     children: [
                       _fieldRow([
-                        _field(_address, _tr('Rua / Avenida', 'Street / Avenue', 'Calle / Avenida')),
+                        _field(
+                            _address,
+                            _tr('Rua / Avenida', 'Street / Avenue',
+                                'Calle / Avenida')),
                         _field(_number, _tr('Número', 'Number', 'Número')),
                       ]),
                       const SizedBox(height: 12),
@@ -5194,7 +5977,9 @@ class _CheckoutPageState extends State<_CheckoutPage> {
                 const SizedBox(height: 18),
                 _sectionCard(
                   title: _tr(
-                    widget.signedIn ? '3. Forma de pagamento' : '4. Forma de pagamento',
+                    widget.signedIn
+                        ? '3. Forma de pagamento'
+                        : '4. Forma de pagamento',
                     widget.signedIn ? '3. Payment method' : '4. Payment method',
                     widget.signedIn ? '3. Método de pago' : '4. Método de pago',
                   ),
@@ -5215,7 +6000,8 @@ class _CheckoutPageState extends State<_CheckoutPage> {
                             'Pago rápido y seguro.',
                           ),
                         ),
-                        secondary: const Icon(Icons.pix_outlined, color: _primary),
+                        secondary:
+                            const Icon(Icons.pix_outlined, color: _primary),
                       ),
                       RadioListTile<String>(
                         value: 'card',
@@ -5236,17 +6022,25 @@ class _CheckoutPageState extends State<_CheckoutPage> {
                             'Crédito o débito.',
                           ),
                         ),
-                        secondary: const Icon(Icons.credit_card_outlined, color: _primary),
+                        secondary: const Icon(Icons.credit_card_outlined,
+                            color: _primary),
                       ),
                       if (_payment == 'card') ...[
                         const Divider(height: 20),
                         _fieldRow([
-                          _field(_cardNumber, _tr('Número do cartão', 'Card number', 'Número de tarjeta')),
-                          _field(_cardName, _tr('Nome no cartão', 'Name on card', 'Nombre en la tarjeta')),
+                          _field(
+                              _cardNumber,
+                              _tr('Número do cartão', 'Card number',
+                                  'Número de tarjeta')),
+                          _field(
+                              _cardName,
+                              _tr('Nome no cartão', 'Name on card',
+                                  'Nombre en la tarjeta')),
                         ]),
                         const SizedBox(height: 12),
                         _fieldRow([
-                          _field(_expiry, _tr('Validade', 'Expiry', 'Vencimiento')),
+                          _field(_expiry,
+                              _tr('Validade', 'Expiry', 'Vencimiento')),
                           _field(_cvv, 'CVV'),
                         ]),
                       ],
@@ -5334,9 +6128,11 @@ class _CheckoutPageState extends State<_CheckoutPage> {
       children: [
         _stepDot('1', _tr('Acesso', 'Access', 'Acceso'), true),
         Expanded(child: Container(height: 1, color: _border)),
-        _stepDot('2', _tr('Dados', 'Details', 'Datos'), widget.signedIn || _accessChoice != null),
+        _stepDot('2', _tr('Dados', 'Details', 'Datos'),
+            widget.signedIn || _accessChoice != null),
         Expanded(child: Container(height: 1, color: _border)),
-        _stepDot('3', _tr('Pagamento', 'Payment', 'Pago'), widget.signedIn || _accessChoice != null),
+        _stepDot('3', _tr('Pagamento', 'Payment', 'Pago'),
+            widget.signedIn || _accessChoice != null),
       ],
     );
   }
@@ -5609,16 +6405,20 @@ class _ChatDialogState extends State<_ChatDialog> {
 
   String get _welcome => tr(
         widget.language,
-        'Olá! Eu sou a assistente virtual das Artesãs de Heliópolis. Posso ajudar com cadastro, produtos, compras, pedidos, pagamentos, exportação e outras dúvidas da plataforma. Como posso ajudar?',
-        'Hello! I am the virtual assistant for Artesãs de Heliópolis. I can help with registration, products, purchases, orders, payments, exporting and other platform questions. How can I help?',
-        '¡Hola! Soy la asistente virtual de Artesãs de Heliópolis. Puedo ayudarte con registro, productos, compras, pedidos, pagos, exportación y otras dudas de la plataforma. ¿Cómo puedo ayudarte?',
+        'Olá! Eu sou a assistente virtual das Artesãs de Heliópolis. Escolha uma opção acima para eu te ajudar, ou digite sua dúvida.',
+        'Hello! I am the virtual assistant for Artesãs de Heliópolis. Choose an option above so I can help you, or type your question.',
+        '¡Hola! Soy la asistente virtual de Artesãs de Heliópolis. Elige una opción arriba para que pueda ayudarte, o escribe tu duda.',
       );
 
   List<String> get _quickQuestions => [
-        tr(widget.language, 'Como faço meu cadastro?', 'How do I register?', '¿Cómo me registro?'),
-        tr(widget.language, 'Meu pedido não chegou', 'My order did not arrive', 'Mi pedido no llegó'),
-        tr(widget.language, 'Quero cadastrar um produto', 'I want to add a product', 'Quiero publicar un producto'),
-        tr(widget.language, 'Quero exportar meus produtos', 'I want to export my products', 'Quiero exportar mis productos'),
+        tr(widget.language, 'Como faço meu cadastro?', 'How do I register?',
+            '¿Cómo me registro?'),
+        tr(widget.language, 'Meu pedido não chegou', 'My order did not arrive',
+            'Mi pedido no llegó'),
+        tr(widget.language, 'Quero cadastrar um produto',
+            'I want to add a product', 'Quiero publicar un producto'),
+        tr(widget.language, 'Quero exportar meus produtos',
+            'I want to export my products', 'Quiero exportar mis productos'),
       ];
 
   @override
@@ -5757,7 +6557,8 @@ class _ChatDialogState extends State<_ChatDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  tr(widget.language, 'Assistente Artesãs', 'Artisans Assistant', 'Asistente Artesanas'),
+                  tr(widget.language, 'Assistente Artesãs',
+                      'Artisans Assistant', 'Asistente Artesanas'),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 17,
@@ -5777,7 +6578,8 @@ class _ChatDialogState extends State<_ChatDialog> {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      tr(widget.language, 'Online • PT / EN / ES', 'Online • PT / EN / ES', 'En línea • PT / EN / ES'),
+                      tr(widget.language, 'Online • PT / EN / ES',
+                          'Online • PT / EN / ES', 'En línea • PT / EN / ES'),
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.88),
                         fontSize: 11.5,
@@ -5806,7 +6608,8 @@ class _ChatDialogState extends State<_ChatDialog> {
         padding: const EdgeInsets.fromLTRB(14, 16, 14, 14),
         children: [
           Text(
-            tr(widget.language, 'Como posso ajudar?', 'How can I help?', '¿Cómo puedo ayudarte?'),
+            tr(widget.language, 'Como posso ajudar?', 'How can I help?',
+                '¿Cómo puedo ayudarte?'),
             style: const TextStyle(
               color: _fg,
               fontSize: 13,
@@ -5890,7 +6693,8 @@ class _ChatDialogState extends State<_ChatDialog> {
             ),
             const SizedBox(width: 9),
             Text(
-              tr(widget.language, 'Digitando...', 'Typing...', 'Escribiendo...'),
+              tr(widget.language, 'Digitando...', 'Typing...',
+                  'Escribiendo...'),
               style: const TextStyle(color: _dim, fontSize: 12),
             ),
           ],
@@ -5930,7 +6734,8 @@ class _ChatDialogState extends State<_ChatDialog> {
                   borderRadius: BorderRadius.circular(18),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
               ),
             ),
           ),
