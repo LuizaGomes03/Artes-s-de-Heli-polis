@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import path from "path";
 import { healthRouter } from "./routes/health.routes";
 import { produtosRouter } from "./modules/produtos/produtos.routes";
 import { artesasRouter } from "./modules/artesas/artesas.routes";
@@ -24,3 +25,5 @@ app.use("/api/artesas", artesasRouter);
 app.use("/api/exportacao", exportacaoRouter);
 app.use("/api/mensagens", mensagensRouter);
 app.use("/api/cadastro", cadastroRouter);
+
+app.use("/uploads", express.static(path.resolve(__dirname, "../uploads")));
